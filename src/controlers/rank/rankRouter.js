@@ -25,4 +25,18 @@ router.post('/', async function(req, res) {
     res.send(rank);
 });
 
+router.delete('/:rankId', async function(req, res) {
+    const id = req.params.rankId;
+    Rank.remove({ _id: id })
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err,
+            });
+        });
+});
+
 module.exports = router;
