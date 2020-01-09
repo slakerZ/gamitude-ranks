@@ -47,7 +47,7 @@ router.patch('/:userId', async function(req, res) {
 
 router.delete('/:userId', async function(req, res) {
     const id = req.params.userId;
-    Stats.remove({ _id: id })
+    await Stats.remove({ _id: id })
         .then(result => {
             res.status(200).json(result);
         })

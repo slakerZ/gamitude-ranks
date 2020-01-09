@@ -27,7 +27,7 @@ router.post('/', async function(req, res) {
 
 router.delete('/:rankId', async function(req, res) {
     const id = req.params.rankId;
-    Rank.remove({ _id: id })
+    await Rank.remove({ _id: id })
         .then(result => {
             res.status(200).json(result);
         })
