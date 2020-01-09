@@ -25,14 +25,4 @@ router.post('/', async function(req, res) {
     res.send(rank);
 });
 
-router.patch('/:userId', async function(req, res) {
-    const id = req.params.userId;
-    await Rank.findById(id)
-        .then(doc => {
-            console.log(doc);
-            res.status(200).json(doc);
-        })
-        .catch(err => console.log(err));
-});
-
 module.exports = router;
