@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 const statsRouter = require('./src/controlers/stats/statsRouter');
+const rankRouter = require('./src/controlers/stats/rankRouter');
 
 mongoose.connect(
     'mongodb://recznik:recznik1@ds259738.mlab.com:59738/heroku_pdt1jjb9',
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/stats', statsRouter);
+app.use('/rank', rankRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
