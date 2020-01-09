@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 const Rank = require('../../models/rank');
 /* GET stats on URL/stats */
-router.get('/:userId', async function(req, res) {
-    const id = req.params.userId;
+router.get('/:rankId', async function(req, res) {
+    const id = req.params.rankId;
     await Rank.findById(id)
         .then(doc => {
             console.log(doc);
