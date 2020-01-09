@@ -26,6 +26,23 @@ router.post('/', async function(req, res) {
     res.send(stats);
 });
 
-router.patch('/', function(req, res) {});
+router.patch('/:userId', async function(req, res) {
+    const id = req.params.userId;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.stat] = ops.value;
+    }
+    await Stats.update({ _id: id }, { $set: updateOps })
+        .then(result => {
+            console.log(result);
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err,
+            });
+        });
+});
 
 module.exports = router;
