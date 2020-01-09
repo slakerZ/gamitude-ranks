@@ -9,7 +9,12 @@ var indexRouter = require('./routes/index');
 const statsRouter = require('./src/controlers/stats/statsRouter');
 
 mongoose.connect(
-    'mongodb+srv://admin:admin@cluster0-2urjz.mongodb.net/test?retryWrites=true&w=majority'
+    'mongodb://recznik:recznik1@ds259738.mlab.com:59738/heroku_pdt1jjb9',
+    {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    }
 );
 
 var app = express();
