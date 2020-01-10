@@ -9,14 +9,11 @@ var indexRouter = require('./routes/index');
 const statsRouter = require('./src/controlers/stats/statsRouter');
 const rankRouter = require('./src/controlers/rank/rankRouter');
 
-mongoose.connect(
-    'mongodb://recznik:recznik1@ds259738.mlab.com:59738/heroku_pdt1jjb9',
-    {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-    }
-);
+mongoose.connect(process.env.DATABASE_URL || require('./config'), {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+});
 
 var app = express();
 
