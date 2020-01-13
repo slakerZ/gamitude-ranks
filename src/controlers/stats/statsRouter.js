@@ -9,7 +9,7 @@ router.get('/:userId', async function(req, res) {
     await Stats.findById(id)
         .then(doc => {
             console.log(doc);
-            res.status(200).json(doc);
+            res.status(200).send(doc);
         })
         .catch(err => console.log(err));
 });
@@ -19,8 +19,8 @@ router.post('/', async function(req, res) {
         _id: new mongoose.Types.ObjectId(),
         strength: req.body.strength,
         intelligence: req.body.intelligence,
-        linguistics: req.body.linguistics,
-        artistry: req.body.artistry,
+        fluency: req.body.fluency,
+        creativity: req.body.creativity,
     });
     await stats.save().then(() => console.log('Stats added'));
     res.send(stats);
@@ -35,11 +35,11 @@ router.patch('/:userId', async function(req, res) {
     await Stats.update({ _id: id }, { $set: updateOps })
         .then(result => {
             console.log(result);
-            res.status(200).json(result);
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({
+            res.status(500).send({
                 error: err,
             });
         });
@@ -49,11 +49,11 @@ router.delete('/:userId', async function(req, res) {
     const id = req.params.userId;
     await Stats.remove({ _id: id })
         .then(result => {
-            res.status(200).json(result);
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({
+            res.status(500).send({
                 error: err,
             });
         });

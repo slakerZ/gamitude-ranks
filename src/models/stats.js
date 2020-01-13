@@ -5,8 +5,8 @@ const statsSchema = mongoose.Schema({
     id: ObjectId,
     strength: { type: Number },
     intelligence: { type: Number },
-    linguistics: { type: Number },
-    artistry: { type: Number },
+    fluency: { type: Number },
+    creativity: { type: Number },
 });
 
 const Stats = mongoose.model('Stats', statsSchema);

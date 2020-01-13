@@ -4,7 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const rankSchema = mongoose.Schema({
     id: ObjectId,
     image: { type: String },
-    level_of_rank: { type: String },
+    tier: { type: String },
     name: { type: String },
 });
 
