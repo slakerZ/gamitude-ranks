@@ -15,6 +15,7 @@ mongoose.connect(process.env.DATABASE_URL || require('./config'), {
     useFindAndModify: false,
 });
 
+
 var app = express();
 
 // view engine setup
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/stats', statsRouter);
 app.use('/rank', rankRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
