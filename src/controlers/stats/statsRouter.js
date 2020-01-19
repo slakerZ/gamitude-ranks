@@ -57,6 +57,7 @@ router.delete('/:userId', async function(req, res) {
                 error: err,
             });
         });
+
 });
 
 module.exports = router;
