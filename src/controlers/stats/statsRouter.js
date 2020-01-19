@@ -1,57 +1,63 @@
 const express = require('express');
 const router = express.Router();
-const statsList = {
-    id: 2,
-    strength: 14,
-    intelligence: 30,
-    linguistics: 4,
-    artistry: 10,
-};
+const mongoose = require('mongoose');
+
+const Stats = require('../../models/stats');
 /* GET stats on URL/stats */
-router.get('/', function(req, res) {
-    let response = statsList;
-
-    res.send(response);
+router.get('/:userId', async function(req, res) {
+    const id = req.params.userId;
+    await Stats.findById(id)
+        .then(doc => {
+            console.log(doc);
+            res.status(200).send(doc);
+        })
+        .catch(err => console.log(err));
 });
 
-router.post('/', function(req, res) {
-    const id = req.body.id;
-    const strength = req.body.strength;
-    const intelligence = req.body.intelligence;
-    const linguistics = req.body.linguistics;
-    const artistry = req.body.artistry;
-
-    let response = statsList;
-
-    response['id'] = id;
-    response['strength'] = strength;
-    response['intelligence'] = intelligence;
-    response['linguistics'] = linguistics;
-    response['artistry'] = artistry;
-
-    res.send(response);
+router.post('/', async function(req, res) {
+    const stats = Stats({
+        _id: new mongoose.Types.ObjectId(),
+        strength: req.body.strength,
+        intelligence: req.body.intelligence,
+        fluency: req.body.fluency,
+        creativity: req.body.creativity,
+    });
+    await stats.save().then(() => console.log('Stats added'));
+    res.send(stats);
 });
 
-router.put('/', function(req, res) {
-    const id = req.body.id;
-    if (id === 2) {
-        const strength = req.body.strength;
-        const intelligence = req.body.intelligence;
-        const linguistics = req.body.linguistics;
-        const artistry = req.body.artistry;
-
-        let response = statsList;
-
-        response['id'] = id;
-        response['strength'] = strength;
-        response['intelligence'] = intelligence;
-        response['linguistics'] = linguistics;
-        response['artistry'] = artistry;
-
-        res.send(response);
-    } else {
-        res.send('Brak użytkownika o danym id');
+router.patch('/:userId', async function(req, res) {
+    const id = req.params.userId;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.stat] = ops.value;
     }
+    await Stats.update({ _id: id }, { $set: updateOps })
+        .then(result => {
+            console.log(result);
+            res.status(200).send(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({
+                error: err,
+            });
+        });
+});
+
+router.delete('/:userId', async function(req, res) {
+    const id = req.params.userId;
+    await Stats.remove({ _id: id })
+        .then(result => {
+            res.status(200).send(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({
+                error: err,
+            });
+        });
+
 });
 
 module.exports = router;
