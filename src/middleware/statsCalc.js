@@ -1,39 +1,7 @@
-const Stats = require('../../models/stats');
-/*const text = {
-    project: {
-        stats: ['STRENGTH', 'INTELLIGENCE'],
-        projectUsages: ['5e2493bf793d905e7bc15061', '5e24ad1438f7b81f6de75f53'],
-        _id: '5e1a1b9a155f9263770a3d69',
-        userId: 'someId2',
-        name: 'Python',
-        primaryMethod: '90/30',
-        projectStatus: 'DONE',
-        dominantStat: 'STRENGTH',
-        __v: 0,
-    },
-    projectUsage: {
-        _id: '5e24ad1438f7b81f6de75f53',
-        projectId: '5e1a1b9a155f9263770a3d69',
-        method: '90/30',
-        timeSpend: 25,
-        date: '2020-01-19T19:25:08.404Z',
-        __v: 0,
-    },
-};
-
-const tstats = {
-    strength: 99,
-    intelligence: 68,
-    fluency: 36,
-    creativity: 91,
-    _id: '5e1c3fe52298215130e7c98b',
-    __v: 0,
-};
- */
 module.exports = {
     calc(req, res, next) {
         const stats = req.body.project.stats;
-        const stats_list = Stats(req.body);
+        const stats_list = res.locals.myObject;
         let strength;
         let intelligence;
         let fluency;
@@ -42,16 +10,16 @@ module.exports = {
         for (let i = 0; i < stats.length; i++) {
             stats[i] = stats[i].toLowerCase();
             if (stats[i] === 'strength') {
-                strength = stats_list.strength;
+                strength = stats_list[0].strength;
             }
             if (stats[i] === 'intelligence') {
-                intelligence = stats_list.intelligence;
+                intelligence = stats_list[0].intelligence;
             }
             if (stats[i] === 'fluency') {
-                fluency = stats_list.fluency;
+                fluency = stats_list[0].fluency;
             }
             if (stats[i] === 'creativity') {
-                creativity = stats_list.creativity;
+                creativity = stats_list[0].creativity;
             }
         }
         const domStat = req.body.project.dominantStat.toLowerCase();
@@ -147,6 +115,7 @@ module.exports = {
                 exit['strength'] = strength;
             }
         }
+        res.locals.myObject = exit;
         next();
     },
 };

@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const statsSchema = mongoose.Schema({
     id: ObjectId,
+    userId: {
+        type: String,
+        required: true,
+    },
     strength: {
         type: Number,
         required: true,

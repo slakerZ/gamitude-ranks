@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const calc = require('../../middleware/statsCalc');
+const { calc } = require('../../middleware/statsCalc');
 
 const Stats = require('../../models/stats');
 /* GET stats on URL/stats */
@@ -17,21 +17,35 @@ router.get('/:userId', async function(req, res) {
           });
 });
 
-router.post('/', calc, async function(req, res) {
-    const stats = Stats({
-        _id: new mongoose.Types.ObjectId(),
-        strength: req.exit.body.strength,
-        intelligence: req.exit.body.intelligence,
-        fluency: req.exit.body.fluency,
-        creativity: req.exit.body.creativity,
-    });
-    const pstats = await stats.save();
-    pstats
-        ? res.status(200).send({
-              stats: stats,
-          })
-        : res.status(500).send();
-});
+router.post(
+    '/',
+    async function(req, res, next) {
+        const userid = req.body.project.userId;
+        const z = await Stats.find({ userId: { $eq: userid } });
+        z
+            ? (res.locals.myObject = z)
+            : res.status(404).send({
+                  error: 'Stats not found!',
+              });
+        next();
+    },
+    calc,
+    async function(req, res) {
+        const statsid = req.body.project.userId;
+        const statsUpdated = await Stats.findOneAndUpdate(
+            { userId: { $eq: statsid } },
+            res.locals.myObject,
+            {
+                new: true,
+            }
+        );
+        statsUpdated
+            ? res.status(200).send(res.locals.myObject)
+            : res.status(404).send({
+                  error: 'Stats not found!',
+              });
+    }
+);
 
 router.patch('/:statsId', async function(req, res) {
     const statsid = req.params.statsId;

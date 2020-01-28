@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const rankChange = require('../../middleware/rankChange');
+const { rankChange } = require('../../middleware/rankChange');
 
 const Rank = require('../../models/rank');
 /* GET rank on URL/rank */
