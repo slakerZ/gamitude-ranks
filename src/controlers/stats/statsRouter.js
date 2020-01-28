@@ -22,12 +22,14 @@ router.post(
     async function(req, res, next) {
         const userid = req.body.project.userId;
         const z = await Stats.find({ userId: { $eq: userid } });
-        z.length
-            ? (res.locals.myObject = z)
-            : res.status(404).send({
-                  error: 'Stats not found!',
-              });
-        next();
+        if (z.length !== 0) {
+            res.locals.myObject = z;
+            next();
+        } else {
+            res.status(404)
+                .send({ error: 'Stats not found!' })
+                .end();
+        }
     },
     calc,
     async function(req, res) {
