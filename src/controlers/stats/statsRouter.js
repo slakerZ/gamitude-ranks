@@ -22,7 +22,7 @@ router.post(
     async function(req, res, next) {
         const userid = req.body.project.userId;
         const z = await Stats.find({ userId: { $eq: userid } });
-        z
+        z.length
             ? (res.locals.myObject = z)
             : res.status(404).send({
                   error: 'Stats not found!',
