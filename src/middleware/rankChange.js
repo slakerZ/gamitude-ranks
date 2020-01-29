@@ -1,20 +1,9 @@
-const Stats = require('../models/stats');
-
-const tstats = {
-    strength: 99,
-    intelligence: 68,
-    fluency: 36,
-    creativity: 91,
-    _id: '5e1c3fe52298215130e7c98b',
-    __v: 0,
-};
-
 module.exports = {
     rankChange(req, res, next) {
-        const strength = tstats.strength;
-        const intelligence = tstats.intelligence;
-        const fluency = tstats.fluency;
-        const creativity = tstats.creativity;
+        const strength = res.locals.myObject[0].strength;
+        const intelligence = res.locals.myObject[0].intelligence;
+        const fluency = res.locals.myObject[0].fluency;
+        const creativity = res.locals.myObject[0].creativity;
         let rank = {};
 
         let sum = strength + intelligence + fluency + creativity;
@@ -97,6 +86,7 @@ module.exports = {
                 rank['name'] = 'Human';
             }
         }
+        res.locals.myObject = rank;
         next();
     },
 };

@@ -49,7 +49,7 @@ router.post(
             }
         );
         statsUpdated
-            ? res.status(200).send(res.locals.myObject)
+            ? res.status(200).send(statsUpdated)
             : res.status(404).send({
                   error: 'Stats not found!',
               });
