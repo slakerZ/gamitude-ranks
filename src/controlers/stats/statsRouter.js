@@ -7,7 +7,7 @@ const Stats = require('../../models/stats');
 /* GET stats on URL/stats */
 router.get('/:userId', async function(req, res) {
     const userid = req.params.userId;
-    const stats = await Stats.findById(userid);
+    const stats = await Stats.find({ userId: { $eq: userid } });
     stats
         ? res.status(200).send({
               stats: stats,
@@ -26,9 +26,16 @@ router.post(
             res.locals.myObject = z;
             next();
         } else {
-            res.status(404)
-                .send({ error: 'Stats not found!' })
-                .end();
+            const stats = Stats({
+                userId: userid,
+            });
+            const newStats = await stats.save();
+            if (newStats.length !== 0) {
+                res.locals.newObject = newStats;
+                next();
+            } else {
+                res.status(500).send();
+            }
         }
     },
     calc,

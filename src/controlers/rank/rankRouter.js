@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { rankChange } = require('../../middleware/rankChange');
 
 const Rank = require('../../models/rank');
 /* GET rank on URL/rank */
@@ -29,7 +28,7 @@ router.get('/name/:rankName', async function(req, res) {
           });
 });
 
-router.post('/', rankChange, async function(req, res) {
+router.post('/', async function(req, res) {
     const rank = Rank({
         _id: new mongoose.Types.ObjectId(),
         image: req.body.image,

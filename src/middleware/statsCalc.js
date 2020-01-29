@@ -2,6 +2,7 @@ module.exports = {
     calc(req, res, next) {
         const stats = req.body.project.stats;
         const stats_list = res.locals.myObject;
+        const new_stats_list = res.locals.newObject;
         let strength;
         let intelligence;
         let fluency;
@@ -10,16 +11,32 @@ module.exports = {
         for (let i = 0; i < stats.length; i++) {
             stats[i] = stats[i].toLowerCase();
             if (stats[i] === 'strength') {
-                strength = stats_list[0].strength;
+                if (stats_list !== undefined) {
+                    strength = stats_list[0].strength;
+                } else {
+                    strength = new_stats_list.strength;
+                }
             }
             if (stats[i] === 'intelligence') {
-                intelligence = stats_list[0].intelligence;
+                if (stats_list !== undefined) {
+                    intelligence = stats_list[0].intelligence;
+                } else {
+                    intelligence = new_stats_list.intelligence;
+                }
             }
             if (stats[i] === 'fluency') {
-                fluency = stats_list[0].fluency;
+                if (stats_list !== undefined) {
+                    fluency = stats_list[0].fluency;
+                } else {
+                    fluency = new_stats_list.fluency;
+                }
             }
             if (stats[i] === 'creativity') {
-                creativity = stats_list[0].creativity;
+                if (stats_list !== undefined) {
+                    creativity = stats_list[0].creativity;
+                } else {
+                    creativity = new_stats_list.creativity;
+                }
             }
         }
         const domStat = req.body.project.dominantStat.toLowerCase();
