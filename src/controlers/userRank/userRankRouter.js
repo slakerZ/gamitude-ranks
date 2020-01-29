@@ -37,12 +37,12 @@ router.get(
         const userid = req.params.userId;
         const userRank = await UserRank.findOneAndUpdate(
             { userId: { $eq: userid } },
-            { rankId: res.locals.myObject._id },
+            { rankId: res.locals.myObject },
             { new: true }
         );
         userRank
             ? res.status(200).send({
-                  userRank: userRank,
+                  userRank: res.locals.myObject,
               })
             : res.status(404).send({
                   error: 'User not found!',
@@ -50,18 +50,23 @@ router.get(
     }
 );
 
-router.post('/', async function(req, res) {
-    const userRank = UserRank({
-        _id: new mongoose.Types.ObjectId(),
-        userId: req.body.userId,
-        rankId: req.body.rankId,
-    });
-    const newUserRank = await userRank.save();
-    newUserRank
-        ? res.status(200).send({
-              userRank: userRank,
-          })
-        : res.status(500).send();
+router.post('/:userId', async function(req, res) {
+    const rank = await Rank.findOne({ name: 'Sloth' });
+    if (rank.length !== 0) {
+        const userRank = UserRank({
+            _id: new mongoose.Types.ObjectId(),
+            userId: req.params.userId,
+            rankId: rank,
+        });
+        const newUserRank = await userRank.save();
+        newUserRank
+            ? res.status(200).send({
+                  userRank: userRank,
+              })
+            : res.status(500).send();
+    } else {
+        res.status(404).send('Rank not found');
+    }
 });
 
 module.exports = router;
