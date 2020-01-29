@@ -10,6 +10,7 @@ const statsRouter = require('./src/controlers/stats/statsRouter');
 const rankRouter = require('./src/controlers/rank/rankRouter');
 const userRankRouter = require('./src/controlers/userRank/userRankRouter');
 
+
 mongoose.connect(process.env.DATABASE_URL || require('./config'), {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -32,6 +33,7 @@ app.use('/', indexRouter);
 app.use('/stats', statsRouter);
 app.use('/rank', rankRouter);
 app.use('/userRank', userRankRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Rank = require('../../models/rank');
+
 /* GET rank on URL/rank */
 router.get('/:rankId', async function(req, res) {
     const rankid = req.params.rankId;
@@ -26,6 +27,7 @@ router.get('/name/:rankName', async function(req, res) {
         : res.status(404).send({
               error: 'Rank not found!',
           });
+
 });
 
 router.post('/', async function(req, res) {
@@ -58,6 +60,7 @@ router.delete('/:rankId', async function(req, res) {
             status: 1,
         });
     }
+
 });
 
 module.exports = router;
