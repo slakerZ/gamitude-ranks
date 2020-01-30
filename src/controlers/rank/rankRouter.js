@@ -3,15 +3,31 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Rank = require('../../models/rank');
-/* GET stats on URL/stats */
+
+/* GET rank on URL/rank */
 router.get('/:rankId', async function(req, res) {
-    const id = req.params.rankId;
-    await Rank.findById(id)
-        .then(doc => {
-            console.log(doc);
-            res.status(200).send(doc);
-        })
-        .catch(err => console.log(err));
+    const rankid = req.params.rankId;
+    const rank = await Rank.findById(rankid);
+    rank
+        ? res.status(200).send({
+              rank: rank,
+          })
+        : res.status(404).send({
+              error: 'Rank not found!',
+          });
+});
+
+router.get('/name/:rankName', async function(req, res) {
+    const rankname = req.params.rankName;
+    const rank = await Rank.findOne({ name: rankname });
+    rank
+        ? res.status(200).send({
+              rank: rank,
+          })
+        : res.status(404).send({
+              error: 'Rank not found!',
+          });
+
 });
 
 router.post('/', async function(req, res) {
@@ -21,22 +37,30 @@ router.post('/', async function(req, res) {
         tier: req.body.tier,
         name: req.body.name,
     });
-    await rank.save().then(() => console.log('Stats added'));
-    res.send(rank);
+    const prank = await rank.save();
+    prank
+        ? res.status(200).send({
+              rank: rank,
+          })
+        : res.status(500).send();
 });
 
 router.delete('/:rankId', async function(req, res) {
-    const id = req.params.rankId;
-    await Rank.remove({ _id: id })
-        .then(result => {
-            res.status(200).send(result);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send({
-                error: err,
-            });
+    const rankid = req.params.rankId;
+    if (mongoose.Types.ObjectId.isValid(rankid)) {
+        const deleted = await Rank.findByIdAndRemove(rankid);
+        deleted
+            ? res.status(200).send()
+            : res.status(404).send({
+                  error: 'Rank not found!',
+              });
+    } else {
+        res.status(400).send({
+            error: 'rankId not valid!',
+            status: 1,
         });
+    }
+
 });
 
 module.exports = router;

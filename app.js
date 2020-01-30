@@ -8,13 +8,14 @@ var mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 const statsRouter = require('./src/controlers/stats/statsRouter');
 const rankRouter = require('./src/controlers/rank/rankRouter');
+const userRankRouter = require('./src/controlers/userRank/userRankRouter');
+
 
 mongoose.connect(process.env.DATABASE_URL || require('./config'), {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
 });
-
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/stats', statsRouter);
 app.use('/rank', rankRouter);
+app.use('/userRank', userRankRouter);
 
 
 // catch 404 and forward to error handler
