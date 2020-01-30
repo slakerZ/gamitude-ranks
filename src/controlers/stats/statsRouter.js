@@ -3,7 +3,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { calc } = require('../../middleware/statsCalc');
 
-
 const Stats = require('../../models/stats');
 /* GET stats on URL/stats */
 router.get('/:userId', async function(req, res) {
@@ -92,7 +91,6 @@ router.delete('/:userId', async function(req, res) {
             status: 1,
         });
     }
-
 });
 
 module.exports = router;
