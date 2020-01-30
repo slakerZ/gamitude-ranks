@@ -9,7 +9,7 @@ const statsRouter = require('./src/controlers/stats/statsRouter');
 const rankRouter = require('./src/controlers/rank/rankRouter');
 const userRankRouter = require('./src/controlers/userRank/userRankRouter');
 
-mongoose.connect(process.env.DATABASE_URL || require('./config'), {
+mongoose.connect(process.env.DATABASE_URL ||"mongodb://recznik:recznik1@ds259738.mlab.com:59738/heroku_pdt1jjb9", {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
